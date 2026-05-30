@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presença Catequese</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>✝ Catequese</h1>
+    <p>Controle de Presença</p>
+  </header>
+
+  <nav>
+    <button class="nav-btn active" data-tela="alunos">👥 Alunos</button>
+    <button class="nav-btn" data-tela="presenca">📋 Presença</button>
+    <button class="nav-btn" data-tela="historico">📅 Histórico</button>
+    <button class="nav-btn" data-tela="relatorio">📊 Relatório</button>
+  </nav>
+
+  <main>
+
+    <!-- TELA 1: Alunos -->
+    <section id="tela-alunos" class="tela ativa">
+      <h2>Alunos Cadastrados</h2>
+
+      <div class="form-adicionar">
+        <input type="text" id="input-aluno" placeholder="Nome do aluno..." />
+        <button id="btn-adicionar">Adicionar</button>
+      </div>
+
+      <ul id="lista-alunos">
+        <!-- preenchida pelo JS -->
+      </ul>
+    </section>
+
+    <!-- TELA 2: Presença -->
+    <section id="tela-presenca" class="tela">
+      <h2>Marcar Presença</h2>
+
+      <div class="form-data">
+        <label for="input-data">Data da aula:</label>
+        <input type="date" id="input-data" />
+        <button id="btn-carregar-data">Carregar</button>
+      </div>
+
+      <ul id="lista-presenca">
+        <!-- preenchida pelo JS -->
+      </ul>
+
+      <button id="btn-salvar-presenca" class="btn-salvar" style="display:none">
+        💾 Salvar Presença
+      </button>
+    </section>
+
+    <!-- TELA 3: Histórico -->
+    <section id="tela-historico" class="tela">
+      <h2>Histórico de Presenças</h2>
+
+      <div id="lista-historico">
+        <!-- preenchida pelo JS -->
+      </div>
+    </section>
+
+    <!-- TELA 4: Relatório -->
+    <section id="tela-relatorio" class="tela">
+      <h2>Relatório Geral</h2>
+
+      <div id="conteudo-relatorio">
+        <!-- preenchida pelo JS -->
+      </div>
+
+      <button id="btn-imprimir">🖨️ Imprimir Relatório</button>
+    </section>
+
+  </main>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
