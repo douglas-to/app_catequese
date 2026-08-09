@@ -302,3 +302,32 @@ ul {
   header { background: none; color: var(--texto); }
   body { background: white; }
 }
+
+/* ===== DICAS DE USO ===== */
+.dica {
+  font-size: 0.85rem;
+  color: var(--texto-mudo);
+  background: var(--vinho-claro);
+  border-left: 3px solid var(--vinho);
+  padding: 0.6rem 0.9rem;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* ===== FOCO VISÍVEL (acessibilidade de teclado) ===== */
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--vinho);
+  outline-offset: 3px;
+}
+
+/* ===== TAMANHO MÍNIMO DE TOQUE (celular) ===== */
+button, input[type="checkbox"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.nav-btn {
+  min-height: 48px;
+}
