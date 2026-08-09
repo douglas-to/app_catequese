@@ -8,75 +8,97 @@
 </head>
 <body>
 
-  <header>
-    <h1>✝ Catequese</h1>
-    <p>Controle de Presença</p>
-  </header>
+  <!-- header com role -->
+<header role="banner">
+  <h1>✝ Catequese</h1>
+  <p>Controle de Presença</p>
+</header>
 
-  <nav>
-    <button class="nav-btn active" data-tela="alunos">👥 Alunos</button>
-    <button class="nav-btn" data-tela="presenca">📋 Presença</button>
-    <button class="nav-btn" data-tela="historico">📅 Histórico</button>
-    <button class="nav-btn" data-tela="relatorio">📊 Relatório</button>
-  </nav>
+<!-- nav com label descritivo -->
+<nav role="navigation" aria-label="Menu principal">
+  <button class="nav-btn active" data-tela="alunos" aria-current="page">
+    👥 Alunos
+  </button>
+  <button class="nav-btn" data-tela="presenca">📋 Presença</button>
+  <button class="nav-btn" data-tela="historico">📅 Histórico</button>
+  <button class="nav-btn" data-tela="relatorio">📊 Relatório</button>
+</nav>
 
-  <main>
+<main role="main">
 
-    <!-- TELA 1: Alunos -->
-    <section id="tela-alunos" class="tela ativa">
-      <h2>Alunos Cadastrados</h2>
-
-      <div class="form-adicionar">
-        <input type="text" id="input-aluno" placeholder="Nome do aluno..." />
-        <button id="btn-adicionar">Adicionar</button>
-      </div>
-
-      <ul id="lista-alunos">
-        <!-- preenchida pelo JS -->
-      </ul>
-    </section>
-
-    <!-- TELA 2: Presença -->
-    <section id="tela-presenca" class="tela">
-      <h2>Marcar Presença</h2>
-
-      <div class="form-data">
-        <label for="input-data">Data da aula:</label>
-        <input type="date" id="input-data" />
-        <button id="btn-carregar-data">Carregar</button>
-      </div>
-
-      <ul id="lista-presenca">
-        <!-- preenchida pelo JS -->
-      </ul>
-
-      <button id="btn-salvar-presenca" class="btn-salvar" style="display:none">
-        💾 Salvar Presença
+  <!-- TELA 1 -->
+  <section id="tela-alunos" class="tela ativa" aria-label="Cadastro de alunos">
+    <h2>Alunos Cadastrados</h2>
+    <div class="form-adicionar">
+      <label for="input-aluno">Nome do aluno</label>
+      <input type="text" id="input-aluno"
+        placeholder="Digite o nome completo..."
+        aria-describedby="dica-aluno" />
+      <button id="btn-adicionar" aria-label="Adicionar aluno à lista">
+        Adicionar
       </button>
-    </section>
+    </div>
+    <p id="dica-aluno" class="dica">
+      💡 Digite o nome e clique em <strong>Adicionar</strong> ou pressione <strong>Enter</strong>
+    </p>
+    <ul id="lista-alunos" aria-live="polite" aria-label="Lista de alunos"></ul>
+  </section>
 
-    <!-- TELA 3: Histórico -->
-    <section id="tela-historico" class="tela">
-      <h2>Histórico de Presenças</h2>
+  <!-- TELA 2 -->
+  <section id="tela-presenca" class="tela" aria-label="Marcar presença">
+    <h2>Marcar Presença</h2>
+    <div class="form-data">
+      <label for="input-data">Data da aula</label>
+      <input type="date" id="input-data" aria-describedby="dica-presenca" />
+      <button id="btn-carregar-data" aria-label="Carregar lista de alunos para esta data">
+        Carregar
+      </button>
+    </div>
+    <p id="dica-presenca" class="dica">
+      💡 Escolha a data da aula e clique em <strong>Carregar</strong>. Depois marque os alunos que vieram e clique em <strong>Salvar Presença</strong>
+    </p>
+    <ul id="lista-presenca" aria-live="polite" aria-label="Lista de presença"></ul>
+    <button id="btn-salvar-presenca" class="btn-salvar" style="display:none"
+      aria-label="Salvar presença desta aula">
+      💾 Salvar Presença
+    </button>
+  </section>
 
-      <div id="lista-historico">
-        <!-- preenchida pelo JS -->
-      </div>
-    </section>
+  <!-- TELA 3 -->
+  <section id="tela-historico" class="tela" aria-label="Histórico de presenças">
+    <h2>Histórico de Presenças</h2>
+    <p class="dica">💡 Aqui você vê todas as aulas já registradas, do mais recente para o mais antigo</p>
+    <div id="lista-historico" aria-live="polite"></div>
+  </section>
 
-    <!-- TELA 4: Relatório -->
-    <section id="tela-relatorio" class="tela">
-      <h2>Relatório Geral</h2>
+  <!-- TELA 4 -->
+  <section id="tela-relatorio" class="tela" aria-label="Relatório geral">
+    <h2>Relatório Geral</h2>
+    <p class="dica">💡 Veja quantas aulas cada aluno participou e o percentual de presença</p>
+    <div id="conteudo-relatorio" aria-live="polite"></div>
+    <button id="btn-imprimir" aria-label="Imprimir relatório de presença">
+      🖨️ Imprimir Relatório
+    </button>
+  </section>
 
-      <div id="conteudo-relatorio">
-        <!-- preenchida pelo JS -->
-      </div>
+</main>
+<!-- 1. SDK externo -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      <button id="btn-imprimir">🖨️ Imprimir Relatório</button>
-    </section>
+<!-- 2. Conexão (db precisa existir antes de tudo) -->
+<script src="../js/supabase.js"></script>
 
-  </main>
+<!-- 3. Utilitários (usados pelos outros) -->
+<script src="../js/ui.js"></script>
 
-  <script src="../js/script.js"></script>
+<!-- 4. Módulos (podem usar db e funções do ui.js) -->
+<script src="../js/alunos.js"></script>
+<script src="../js/presenca.js"></script>
+<script src="../js/historico.js"></script>
+<script src="../js/relatorio.js"></script>
+
+<!-- 4. Por último (usa funções de todos acima) -->
+<script src="../js/main.js"></script>
+
 </body>
 </html>
