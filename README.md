@@ -1,6 +1,6 @@
 # ✝ App de Presença — Catequese
 
-Aplicativo web simples para controle de presença de catequese, sem necessidade de servidor ou banco de dados. Todos os dados são salvos diretamente no navegador via **localStorage**.
+Aplicativo web para controle de presença de catequese com banco de dados em nuvem via **Supabase**. Os dados ficam salvos online e podem ser acessados de qualquer dispositivo.
 
 ---
 
@@ -8,21 +8,41 @@ Aplicativo web simples para controle de presença de catequese, sem necessidade 
 
 ```
 catequese/
-├── index.html   → estrutura das telas (HTML)
-├── style.css    → visual e tema (CSS)
-├── script.js    → lógica e dados (JavaScript)
-└── README.md    → este arquivo
+├── index.html        → estrutura das telas (HTML)
+├── css/
+│   └── style.css     → visual e tema (CSS)
+├── js/
+│   ├── supabase.js   → conexão com o banco de dados
+│   ├── ui.js         → funções utilitárias de interface
+│   ├── alunos.js     → cadastro e listagem de alunos
+│   ├── presenca.js   → marcação e salvamento de presença
+│   ├── historico.js  → exibição do histórico por data
+│   ├── relatorio.js  → relatório geral e impressão
+│   └── main.js       → navegação e inicialização
+└── README.md         → este arquivo
 ```
 
 ---
 
 ## 🚀 Como usar
 
-1. Baixe os arquivos e coloque todos na **mesma pasta**
-2. Abra o arquivo `index.html` no navegador (Chrome, Firefox, Edge...)
-3. Pronto — nenhuma instalação necessária!
+> ⚠️ O app usa o Supabase (banco em nuvem) — por isso **não pode ser aberto diretamente** clicando no `index.html`. Precisa rodar em um servidor local.
 
-> ⚠️ Os dados ficam salvos **apenas neste navegador e neste computador**. Se abrir em outro dispositivo, os dados não estarão lá.
+### Com VS Code (recomendado)
+
+1. Instale a extensão **Live Server** (autor: Ritwick Dey)
+2. Abra a pasta do projeto no VS Code
+3. Clique com o botão direito no `index.html` → **Open with Live Server**
+4. O navegador abrirá em `http://127.0.0.1:5500`
+
+### Com Python (alternativa)
+
+```bash
+# dentro da pasta do projeto
+python -m http.server 5500
+```
+
+Depois acesse `http://localhost:5500` no navegador.
 
 ---
 
@@ -30,13 +50,13 @@ catequese/
 
 ### 👥 Alunos
 - Cadastrar alunos pelo nome
-- Remover alunos com confirmação
+- Remover alunos com confirmação (remove também todas as presenças do aluno)
 - Adicionar com a tecla **Enter** ou pelo botão
 
 ### 📋 Presença
-- Escolher a data da aula
+- Escolher a data da aula e carregar a lista
 - Marcar presença (✅) ou falta (❌) para cada aluno
-- Salvar o registro da aula
+- Salvar o registro — se a data já existir, atualiza automaticamente
 
 ### 📅 Histórico
 - Ver todas as aulas registradas (da mais recente para a mais antiga)
@@ -50,23 +70,37 @@ catequese/
 
 ---
 
-## 💾 Como os dados são salvos
+## 🗄️ Banco de Dados (Supabase)
 
-Os dados ficam no `localStorage` do navegador em duas chaves:
+Os dados ficam em um banco **PostgreSQL** na nuvem com duas tabelas:
 
+```sql
+alunos
+  id         → identificador único
+  nome       → nome do aluno (único)
+  created_at → data de cadastro
+
+presencas
+  id         → identificador único
+  aluno_id   → referência ao aluno
+  data       → data da aula
+  presente   → true (presente) ou false (faltou)
+  created_at → data do registro
 ```
-alunos    → ["Maria", "João", "Ana"]
 
-presencas → {
-  "2025-05-24": { "Maria": true, "João": false, "Ana": true },
-  "2025-05-31": { "Maria": true, "João": true,  "Ana": false }
-}
-```
+> 💡 Se um aluno for removido, todas as presenças dele são apagadas automaticamente pelo banco (`ON DELETE CASCADE`).
 
-Para **ver ou limpar** os dados manualmente:
-1. Abra o navegador com o app
-2. Pressione `F12` → aba **Application** (Chrome) ou **Storage** (Firefox)
-3. Em **Local Storage** você verá as chaves `alunos` e `presencas`
+---
+
+## ♿ Acessibilidade
+
+O app foi desenvolvido com suporte a:
+
+- **Leitores de tela** — atributos ARIA em todas as seções e botões
+- **`aria-live`** — anuncia mudanças nas listas automaticamente
+- **Navegação por teclado** — foco visível em todos os elementos interativos
+- **Dicas visuais** — instruções de uso visíveis em cada tela
+- **Área de toque mínima** — botões com tamanho adequado para celular
 
 ---
 
@@ -74,30 +108,50 @@ Para **ver ou limpar** os dados manualmente:
 
 | Tecnologia | Uso |
 |---|---|
-| HTML5 | Estrutura das telas |
-| CSS3 | Visual, variáveis, flexbox, media print |
-| JavaScript (ES6+) | Lógica, eventos, localStorage |
+| HTML5 | Estrutura semântica das telas |
+| CSS3 | Visual, variáveis, flexbox, ARIA, media print |
+| JavaScript ES6+ | Lógica, eventos, async/await, módulos |
+| Supabase | Banco de dados PostgreSQL em nuvem + API REST |
 | Google Fonts | Playfair Display + Lato |
 
 ---
 
 ## ✏️ Possíveis melhorias futuras
 
+- [ ] Autenticação com login e senha
 - [ ] Editar nome de aluno já cadastrado
 - [ ] Excluir um dia inteiro do histórico
-- [ ] Exportar os dados em `.csv` ou `.json`
+- [ ] Exportar os dados em `.csv` ou `.pdf`
 - [ ] Filtrar relatório por período
 - [ ] Tema escuro
+- [ ] Organização por turmas
 
 ---
 
-## 👨‍💻 Projeto educacional
+## 👨‍💻 Histórico de desenvolvimento
 
 Este app foi desenvolvido passo a passo com foco em aprendizado:
 
-- **Passo 1** — HTML: estrutura e semântica
-- **Passo 2** — CSS: variáveis, flexbox, sistema de telas
-- **Passo 3** — JavaScript: DOM, eventos, localStorage
+- **v1** — HTML + CSS + JavaScript com localStorage
+  - Estrutura das telas e navegação
+  - Visual com variáveis CSS e flexbox
+  - Lógica com DOM, eventos e localStorage
+
+- **v2** — Migração para Supabase
+  - Banco de dados PostgreSQL em nuvem
+  - Funções assíncronas com `async/await`
+  - `upsert` para evitar duplicatas de presença
+  - Join automático entre tabelas
+
+- **v3** — Refatoração em módulos
+  - Separação de responsabilidades por arquivo
+  - Cada módulo gerencia seus próprios elementos
+  - Código mais legível e fácil de manter
+
+- **v4** — Acessibilidade
+  - Suporte a leitores de tela com ARIA
+  - Dicas visuais de uso em cada tela
+  - Melhoria de foco e área de toque
 
 ---
 
